@@ -202,6 +202,7 @@ export default function publicAdminBot() {
             setInputQuestion={setInputQuestion}
             handleSubmit={handleSubmit}
             chatEnd={chatEnd}
+            currentPage="education"
         />
 
     );
