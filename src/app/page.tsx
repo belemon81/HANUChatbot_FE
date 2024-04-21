@@ -9,7 +9,7 @@ export default function Home() {
         </h1>
         <ul className="mt-10 mb-6 text-xs sm:text-sm text-slate-400">
           <li><Link href="/education" >Educational program</Link></li>
-          <li><Link href="/publicAd" >Public administration</Link></li>
+          <li><Link href="/services" >Public administration</Link></li>
         </ul>
       </div>
     </div>
