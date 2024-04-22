@@ -1,13 +1,16 @@
 'use client';
 import { useState, useEffect, useRef } from "react";
 import ChatInterface from "@/components/ChatInterface";
+import { usePathname } from "next/navigation";
 
 export default function publicAdminBot() {
     interface ChatLogItem {
         type: 'bot' | 'user';
         message: any;
     }
-
+    
+    const currentPage = usePathname();
+    
     const [inputQuestion, setInputQuestion] = useState('');
     const [chatLog, setChatLog] = useState<ChatLogItem[]>([
         { type: 'bot', message: 'Ask me anything about Hanoi University public administration service' }
@@ -36,7 +39,7 @@ export default function publicAdminBot() {
     const clearChat = () => {
         if (chatLog.length > 1) {
             setChatLog([{ type: 'bot', message: 'Ask me anything about Hanoi University public adminstration service' }]);
-            sessionStorage.removeItem('botMessage');
+            sessionStorage.removeItem('botMessage_services');
         }
     };
 
@@ -71,9 +74,9 @@ export default function publicAdminBot() {
                 contextText += `${document}\n`; // Assuming each document is a string
             }
         }
-        console.log("testing ", contextText);
+        console.log(contextText);
 
-        const prevBotMessage = sessionStorage.getItem('botMessage');
+        const prevBotMessage = sessionStorage.getItem('botMessage_services');
 
         const systemContent = `You are a friendly chatbot. You must refer to CONTEXT to answer question. 
         You respond in a concise, technically credible tone. If you're uncertain and the answer isn't explicitly stated
@@ -175,13 +178,13 @@ export default function publicAdminBot() {
             if (contentType && contentType.includes('application/json')) {
                 // If the response is JSON, parse it as JSON
                 const responseData = await response.json();
-                sessionStorage.setItem('botMessage', responseData.message);
+                sessionStorage.setItem('botMessage_services', responseData.message);
                 // Assuming responseData is an object with the bot's message
                 setChatLog(prevChatLog => [...prevChatLog, { type: 'bot', message: responseData.message }]);
             } else {
                 // If the response is not JSON, treat it as plain text
                 const responseText = await response.text();
-                sessionStorage.setItem('botMessage', responseText);
+                sessionStorage.setItem('botMessage_services', responseText);
 
                 // Assuming responseText contains the bot's message
                 setChatLog(prevChatLog => [...prevChatLog, { type: 'bot', message: responseText }]);
@@ -205,7 +208,7 @@ export default function publicAdminBot() {
             setInputQuestion={setInputQuestion}
             handleSubmit={handleSubmit}
             chatEnd={chatEnd}
-            currentPage="services"
+            currentPage={currentPage}
         />
     );
 };

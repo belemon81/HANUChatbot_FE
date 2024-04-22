@@ -12,10 +12,10 @@ const ChatInterface = ({ clearChat, chatLog, isLoading, inputQuestion, setInputQ
                 <h1 className="text-white py-4 text-2xl font-semibold mb-6">HanuGPT</h1>
                 <div className="p-4">
                     <Link href="/education">
-                        <div className={`rounded-lg p-4 text-white cursor-pointer transition duration-300 hover:bg-gray-800 font-semibold mb-4 ${currentPage === "education" ? "bg-gray-500" : "bg-slate-600"}`}>Educational Program</div>
+                        <div className={`rounded-lg p-4 text-white cursor-pointer transition duration-300 hover:bg-gray-800 font-semibold mb-4 ${currentPage === "/education" ? "bg-gray-500" : "bg-slate-600"}`}>Educational Program</div>
                     </Link>
                     <Link href="/services">
-                        <div className={`rounded-lg p-4 text-white cursor-pointer transition duration-300 hover:bg-gray-800 font-semibold ${currentPage === "services" ? "bg-gray-500" : "bg-slate-600"}`}>Public Administration</div>
+                        <div className={`rounded-lg p-4 text-white cursor-pointer transition duration-300 hover:bg-gray-800 font-semibold ${currentPage === "/services" ? "bg-gray-500" : "bg-slate-600"}`}>Public Administration</div>
                     </Link>
                     <div className="mt-4">
                         <button onClick={clearChat} className="bg-slate-600 hover:bg-slate-800 text-white px-4 py-2 rounded-full w-full flex items-center justify-center focus:outline-none">
@@ -53,7 +53,8 @@ const ChatInterface = ({ clearChat, chatLog, isLoading, inputQuestion, setInputQ
                         }
                         {isLoading && (
                             <div className="flex justify-start">
-                                <div className="bg-gray-800 rounded-lg p-4 text-white max-w-sm">
+                                <Image src="/logo.png" width={50} height={50} alt={"logo"} className="w-8 h-8 rounded-full mr-2" />
+                                <div className="bg-gray-600 rounded-lg p-4 text-white max-w-sm">
                                     <LoadingDots />
                                 </div>
                             </div>
