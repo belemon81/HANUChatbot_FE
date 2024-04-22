@@ -43,7 +43,7 @@ const ChatInterface = ({ clearChat, chatLog, isLoading, inputQuestion, setInputQ
                                 {message.type === 'bot' && (
                                     <div className="flex items-center">
                                         <Image src="/logo.png" width={50} height={50} alt={"logo"} className="w-8 h-8 rounded-full mr-2" />
-                                        <div className={`${(message as ChatLogItem).type === 'user' ? 'bg-red-400' : 'bg-gray-600'} rounded-lg p-4 text-white max-w-xl`} style={{ wordWrap: 'break-word' }}>
+                                        <div className={`${message.type === 'user' ? 'bg-red-400' : 'bg-gray-600'} rounded-lg p-4 text-white max-w-xl`} style={{ wordWrap: 'break-word' }}>
                                             {message.message}
                                         </div>
                                     </div>

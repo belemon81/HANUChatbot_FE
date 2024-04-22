@@ -74,7 +74,7 @@ export default function publicAdminBot() {
                 contextText += `${document}\n`; // Assuming each document is a string
             }
         }
-        console.log(contextText);
+        // console.log(contextText);
 
         const prevBotMessage = sessionStorage.getItem('botMessage_services');
 
@@ -83,19 +83,6 @@ export default function publicAdminBot() {
         in the provided CONTEXT, respond with: "Sorry, I'm not sure how to help with that."
         You use the language of the question given to respond.
         You automatically make currency exchange based on the language asked, if not provided specific currency.`;
-
-        const userContent = `CONTEXT:
-        ChatGPT is an AI conversational model developed by OpenAI. It's designed to generate human-like text based on the input it's given.
-        SOURCE: https://openai.com/blog/chatgpt
-
-        QUESTION: 
-        what is chatgpt ?
-        `;
-
-        const assistantContent = `ChatGPT is an AI conversational model developed by OpenAI. It's designed to generate human-like text based on the input it's given.
-
-        SOURCES:
-        https://openai.com/blog/chatgpt`;
 
         const userMessage = `CONTEXT:
         ${contextText}
@@ -115,14 +102,6 @@ export default function publicAdminBot() {
                     {
                         role: "system",
                         content: systemContent
-                    },
-                    {
-                        role: "user",
-                        content: userContent
-                    },
-                    {
-                        role: "assistant",
-                        content: assistantContent
                     },
                     {
                         role: "user",
