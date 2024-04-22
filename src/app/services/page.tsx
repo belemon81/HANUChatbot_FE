@@ -123,14 +123,6 @@ export default function publicAdminBot() {
                     },
                     {
                         role: "user",
-                        content: userContent
-                    },
-                    {
-                        role: "assistant",
-                        content: assistantContent
-                    },
-                    {
-                        role: "user",
                         content: userMessage
                     },
                 ]
