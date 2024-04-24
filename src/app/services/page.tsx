@@ -10,6 +10,12 @@ export default function ServicesBot() {
     }
     
     const currentPage = usePathname();
+
+    const servicesFAQs = [
+        "Cách đăng ký ký túc xá",
+        "Một tín chỉ khoa CNTT bao nhiêu tiền",
+        "Thanh toán học phí bằng cách nào",
+    ];
     
     const [inputQuestion, setInputQuestion] = useState('');
     const [chatLog, setChatLog] = useState<ChatLogItem[]>([
@@ -35,7 +41,7 @@ export default function ServicesBot() {
         setInputQuestion('');
     }
 
-
+    
     const clearChat = () => {
         if (chatLog.length > 1) {
             setChatLog([{ type: 'bot', message: 'Ask me anything about Hanoi University public adminstration service' }]);
@@ -180,6 +186,7 @@ export default function ServicesBot() {
             handleSubmit={handleSubmit}
             chatEnd={chatEnd}
             currentPage={currentPage}
+            FAQs={servicesFAQs}
         />
     );
 };

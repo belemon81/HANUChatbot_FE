@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Sidebar = ({ currentPage, clearChat }) => {
     return (
-        <div className="md:hidden bg-gray-900 w-1/5 flex flex-col justify-center items-center">
+        <div className="max-md:hidden bg-gray-900 w-1/5 flex flex-col justify-center items-center">
             <Image src="/logo.png" width={100} height={100} alt={"logo"}></Image>
             <h1 className="text-white py-4 text-2xl font-semibold mb-6">HanuGPT</h1>
             <div className="p-4">

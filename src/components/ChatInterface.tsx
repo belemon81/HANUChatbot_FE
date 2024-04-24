@@ -1,29 +1,32 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import LoadingDots from "@/components/LoadingDots";
 import Sidebar from "./SideBar";
 
 
-const ChatInterface = ({ clearChat, chatLog, isLoading, inputQuestion, setInputQuestion, handleSubmit, chatEnd, currentPage }) => {
+const ChatInterface = ({ clearChat, chatLog, isLoading, inputQuestion, setInputQuestion, handleSubmit, chatEnd, currentPage, FAQs }) => {
 
-    const FAQs = [
-        "Khoa CNTT có bao nhiêu tín chỉ",
-        "Khoa ngôn ngữ Anh có những môn gì",
-        "Khối kiến thức chung gồm những môn gì",
-    ];
+    const [selectedQuestion, setSelectedQuestion] = useState(null);
 
-        const [selectedQuestion, setSelectedQuestion] = useState(null);
+    useEffect(() => {
+        if (selectedQuestion) {
+            handleSubmit({ preventDefault: () => { } });
+        }
+    }, [selectedQuestion]);
+
 
     const handleFAQClick = (question: any) => {
-        setInputQuestion(question); // Set the clicked question as the input question
-        setSelectedQuestion(question); // Set the selected question state
-    };
+    setInputQuestion(question); // Set the clicked question as the input question
+    setSelectedQuestion(question); // Set the selected question state
+    handleSubmit({ preventDefault: () => {} }, true); // Pass true to indicate it's an FAQ-selected question
+};
+
 
     return (
         <div className="h-screen flex">
-            <Sidebar currentPage={currentPage} clearChat={clearChat}/>
-        
+            <Sidebar currentPage={currentPage} clearChat={clearChat} />
+
             {/* Main Chat Interface */}
             <div className="flex flex-col flex-grow bg-slate-200">
                 <div className="flex-grow p-6 overflow-auto">
@@ -64,7 +67,7 @@ const ChatInterface = ({ clearChat, chatLog, isLoading, inputQuestion, setInputQ
                 {/* Input field */}
                 <form onSubmit={handleSubmit} className="flex-none p-6">
                     <div className="flex flex-wrap gap-2 mb-4">
-                        {FAQs.map((question, index) => (
+                        {selectedQuestion ? null : FAQs.map((question: any, index: any) => (
                             <button
                                 key={index}
                                 className={`bg-gray-300 rounded-lg px-4 py-2 text-gray-800 font-semibold focus:outline-none hover:bg-gray-400 transition-colors duration-300 ${selectedQuestion === question ? 'bg-blue-500 text-white' : ''

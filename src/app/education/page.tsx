@@ -9,7 +9,13 @@ export default function EducationBot() {
         message: any;
     }
     const currentPage = usePathname();
-    
+
+    const educationFAQs = [
+        "Khoa CNTT có bao nhiêu tín chỉ",
+        "Khoa ngôn ngữ Anh có những môn gì",
+        "Khối kiến thức chung gồm những môn gì",
+    ];
+
     const [inputQuestion, setInputQuestion] = useState('');
     const [chatLog, setChatLog] = useState<ChatLogItem[]>([
         { type: 'bot', message: 'Ask me anything about Hanoi University educational program' }
@@ -33,7 +39,6 @@ export default function EducationBot() {
         fetchDocuments(inputQuestion);
         setInputQuestion('');
     }
-
 
     const clearChat = () => {
         if (chatLog.length > 1) {
@@ -179,6 +184,7 @@ export default function EducationBot() {
             handleSubmit={handleSubmit}
             chatEnd={chatEnd}
             currentPage={currentPage}
+            FAQs={educationFAQs}
         />
 
     );
