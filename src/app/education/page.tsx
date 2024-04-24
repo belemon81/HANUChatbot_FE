@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import ChatInterface from "@/components/ChatInterface";
 import { usePathname } from 'next/navigation'
 
-export default function publicAdminBot() {
+export default function EducationBot() {
     interface ChatLogItem {
         type: 'bot' | 'user';
         message: any;
