@@ -19,7 +19,7 @@ export default function ServicesBot() {
 
     const [inputQuestion, setInputQuestion] = useState('');
     const [chatLog, setChatLog] = useState<ChatLogItem[]>([
-        { type: 'bot', message: 'Ask me anything about Hanoi University public administration service' }
+        { type: 'bot', message: 'Hỏi tôi bất cứ điều gì về dịch vụ hành chính công của Đại học Hà Nội' }
     ]);
     const [isLoading, setIsLoading] = useState(false);
 

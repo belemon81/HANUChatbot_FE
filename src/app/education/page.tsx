@@ -11,14 +11,14 @@ export default function EducationBot() {
     const currentPage = usePathname();
 
     const educationFAQs = [
-        "Tổng số tín chỉ khoa công nghệ thông tin",
-        "Khoa ngôn ngữ Anh có những môn gì?",
+        "Tổng số tín chỉ khoa công nghệ thông tin?",
+        "Khoa ngôn ngữ Anh có những định hướng gì?",
         "Khối kiến thức chung gồm những môn gì?"
     ];
 
     const [inputQuestion, setInputQuestion] = useState('');
     const [chatLog, setChatLog] = useState<ChatLogItem[]>([
-        { type: 'bot', message: 'Ask me anything about Hanoi University educational program' }
+        { type: 'bot', message: 'Hỏi tôi bất cứ điều gì về chương trình đào tạo của Đại học Hà Nội' }
     ]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -41,13 +41,11 @@ export default function EducationBot() {
     }
 
     const clearChat = () => {
-        if (chatLog.length > 1) {
-            setChatLog([{ type: 'bot', message: 'Ask me anything about Hanoi University educational program' }]);
-            sessionStorage.removeItem('botMessage_edu');
-
-            // const isDataRemoved = sessionStorage.getItem('botMessage_edu') === null;
-            // console.log('Is session storage data removed:', isDataRemoved);
-        }
+        console.log("Clearing chat");
+        // if (chatLog.length > 1) {
+        setChatLog([{ type: 'bot', message: 'Ask me anything about Hanoi University educational program' }]);
+        sessionStorage.removeItem('botMessages_education');
+        // }
     };
 
     async function fetchDocuments(question: string) {
@@ -57,6 +55,8 @@ export default function EducationBot() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept-Encoding': 'gzip, deflate, br',
+                    'Connection': 'keep-alive'
                 },
                 body: JSON.stringify({ question }),
             });
@@ -89,15 +89,16 @@ export default function EducationBot() {
         const recentResponses = storedResponses.slice(Math.max(storedResponses.length - 5, 0));
         const hasRecentResponses = recentResponses.length > 0;
 
+        console.log(recentResponses);
+
         if (docsData && docsData.relevant_docs && docsData.relevant_docs.length > 0) {
             systemMessage = `
                 You are a friendly chatbot.
-                ${hasRecentResponses ? 'You must refer to CONTEXT first, then HANU documents, filter all relevant content to answer the question' : 'You must refer to HANU documents'} to answer the questions.
-                You respond in a concise, technically credible tone. You must translate your response to Vietnamese.
-                If you can not find relevant information in HANU documents, say apology for not being able to answer.
+                ${hasRecentResponses ? 'You must refer to CONTEXT first, then HANU documents, combine all relevant content to answer the question.' : 'You must refer to HANU documents'} to answer the questions.
+                You respond in a concise, technically credible tone. You must use Vietnamese to respond.
                 You automatically make currency exchange based on the language asked, if not provided specific currency.
             `;
-    
+
             const contextContent = hasRecentResponses ? `CONTEXT: ${recentResponses}; ` : '';
             assistant = {
                 role: 'assistant',
