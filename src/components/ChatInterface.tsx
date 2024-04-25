@@ -28,7 +28,7 @@ const ChatInterface = ({ clearChat, chatLog, isLoading, inputQuestion, setInputQ
             <Sidebar currentPage={currentPage} clearChat={clearChat} />
 
             {/* Main Chat Interface */}
-            <div className="flex flex-col flex-grow bg-slate-100">
+            <div className="flex flex-col flex-grow bg-slate-200">
 
                 <Navbar currentPage={currentPage} clearChat={clearChat}/>
                 
@@ -73,7 +73,7 @@ const ChatInterface = ({ clearChat, chatLog, isLoading, inputQuestion, setInputQ
                         {selectedQuestion ? null : FAQs.map((question: any, index: any) => (
                             <button
                                 key={index}
-                                className={`bg-gray-200 rounded-lg px-4 py-2 text-gray-800 font-semibold focus:outline-none hover:bg-blue-200 transition-colors duration-300 ${selectedQuestion === question ? 'bg-blue-500 text-white' : ''
+                                className={`bg-slate-300 rounded-lg px-4 py-2 text-gray-800 font-semibold focus:outline-none hover:bg-blue-200 transition-colors duration-300 ${selectedQuestion === question ? 'bg-blue-500 text-white' : ''
                                     }`}
                                 onClick={() => handleFAQClick(question)}
                             >{question}

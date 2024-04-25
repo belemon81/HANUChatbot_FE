@@ -24,10 +24,10 @@ const Navbar = ({ currentPage, clearChat }) => {
                     <div className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-10">
                         <div className="py-1">
                             <Link href="/education">
-                                <div className={`block px-4 py-2 ${currentPage === "/education" ? "text-blue-500" : "text-gray-800"} hover:bg-gray-200`}>Educational Program</div>
+                                <div className={`block px-4 py-2 ${currentPage === "/education" ? "text-blue-500" : "text-gray-800"} hover:bg-gray-200`}>Chương trình đào tạo</div>
                             </Link>
                             <Link href="/services">
-                                <div className={`block px-4 py-2 ${currentPage === "/services" ? "text-blue-500" : "text-gray-800"} hover:bg-gray-200`}>Public Administration</div>
+                                <div className={`block px-4 py-2 ${currentPage === "/services" ? "text-blue-500" : "text-gray-800"} hover:bg-gray-200`}>Hành chính công vụ</div>
                             </Link>
                         </div>
                     </div>

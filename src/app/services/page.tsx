@@ -12,9 +12,9 @@ export default function ServicesBot() {
     const currentPage = usePathname();
 
     const servicesFAQs = [
-        "How to register for dormitory?",
-        "How much does one credit in IT department cost?",
-        "How to pay tuition fees?",
+        "Cách đăng ký ký túc xá",
+        "Một tín chỉ khoa Công nghệ thông tin bao nhiêu tiền?",
+        "Cách thanh toán học phí",
     ];
 
     const [inputQuestion, setInputQuestion] = useState('');
@@ -82,7 +82,7 @@ export default function ServicesBot() {
                 contextText += `${document}\n`; // Assuming each document is a string
             }
         }
-        // console.log(contextText);
+        console.log(contextText);
 
         const storedResponses = JSON.parse(sessionStorage.getItem('botMessages_services') || '[]');
         const recentResponses = storedResponses.slice(Math.max(storedResponses.length - 5, 0));
@@ -92,7 +92,7 @@ export default function ServicesBot() {
             systemMessage = `
                 You are a friendly chatbot.
                 ${hasRecentResponses ? 'You must refer to CONTEXT first, then HANU documents, filter all relevant content to answer the question' : 'You must refer to HANU documents'} to answer the questions.
-                You respond in a concise, technically credible tone. You use the language of the question given to respond.
+                You respond in a concise, technically credible tone. You must translate your response to Vietnamese.
                 If you can not find relevant information in HANU documents, say apology for not being able to answer.
                 You automatically make currency exchange based on the language asked, if not provided specific currency.
             `;
