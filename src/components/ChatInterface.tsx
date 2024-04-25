@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import LoadingDots from "@/components/LoadingDots";
+import LoadingDots from "./LoadingDots";
 import Sidebar from "./SideBar";
+import Navbar from "./Navbar";
 
 
 const ChatInterface = ({ clearChat, chatLog, isLoading, inputQuestion, setInputQuestion, handleSubmit, chatEnd, currentPage, FAQs }) => {
@@ -17,11 +18,10 @@ const ChatInterface = ({ clearChat, chatLog, isLoading, inputQuestion, setInputQ
 
 
     const handleFAQClick = (question: any) => {
-    setInputQuestion(question); // Set the clicked question as the input question
-    setSelectedQuestion(question); // Set the selected question state
-    handleSubmit({ preventDefault: () => {} }, true); // Pass true to indicate it's an FAQ-selected question
-};
-
+        setInputQuestion(question); // Set the clicked question as the input question
+        setSelectedQuestion(question); // Set the selected question state
+        handleSubmit({ preventDefault: () => { } }, true); // Pass true to indicate it's an FAQ-selected question
+    };
 
     return (
         <div className="h-screen flex">
@@ -29,6 +29,9 @@ const ChatInterface = ({ clearChat, chatLog, isLoading, inputQuestion, setInputQ
 
             {/* Main Chat Interface */}
             <div className="flex flex-col flex-grow bg-slate-200">
+
+                <Navbar currentPage={currentPage} clearChat={clearChat}/>
+                
                 <div className="flex-grow p-6 overflow-auto">
                     <div className="flex flex-col space-y-4">
                         {chatLog.map((message: any, index: any) => (
