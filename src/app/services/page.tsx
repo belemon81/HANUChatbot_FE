@@ -8,15 +8,15 @@ export default function ServicesBot() {
         type: 'bot' | 'user';
         message: any;
     }
-    
+
     const currentPage = usePathname();
 
     const servicesFAQs = [
-        "Cách đăng ký ký túc xá",
-        "Một tín chỉ khoa CNTT bao nhiêu tiền",
-        "Thanh toán học phí bằng cách nào",
+        "How to register for dormitory?",
+        "How much does one credit in IT department cost?",
+        "How to pay tuition fees?",
     ];
-    
+
     const [inputQuestion, setInputQuestion] = useState('');
     const [chatLog, setChatLog] = useState<ChatLogItem[]>([
         { type: 'bot', message: 'Ask me anything about Hanoi University public administration service' }
@@ -41,7 +41,7 @@ export default function ServicesBot() {
         setInputQuestion('');
     }
 
-    
+
     const clearChat = () => {
         if (chatLog.length > 1) {
             setChatLog([{ type: 'bot', message: 'Ask me anything about Hanoi University public adminstration service' }]);
@@ -71,69 +71,59 @@ export default function ServicesBot() {
     }
 
     const sendMessage = async (question: string, docsData: any) => {
+
         const url = '/api/chat';
         let contextText = "";
+        let systemMessage;
+        let assistant;
 
         if (docsData && docsData.relevant_docs && docsData.relevant_docs.length > 0) {
-            for (let i = 0; i < docsData.relevant_docs.length; i++) {
-                const document = docsData.relevant_docs[i];
+            for (const document of docsData.relevant_docs) {
                 contextText += `${document}\n`; // Assuming each document is a string
             }
         }
         // console.log(contextText);
 
-        const prevBotMessage = sessionStorage.getItem('botMessage_services');
-
-        const systemContent = `You are a friendly chatbot. You must refer to CONTEXT to answer question. 
-        You respond in a concise, technically credible tone. If you're uncertain and the answer isn't explicitly stated
-        in the provided CONTEXT, respond with: "Sorry, I'm not sure how to help with that."
-        You use the language of the question given to respond.
-        You automatically make currency exchange based on the language asked, if not provided specific currency.`;
-
-        const userMessage = `CONTEXT:
-        ${contextText}
-        
-        PREVIOUS RESPONSE:
-        ${prevBotMessage}
-
-        USER QUESTION: 
-        ${question}  
-        `;
-
-        let data;
+        const storedResponses = JSON.parse(sessionStorage.getItem('botMessages_services') || '[]');
+        const recentResponses = storedResponses.slice(Math.max(storedResponses.length - 5, 0));
+        const hasRecentResponses = recentResponses.length > 0;
 
         if (docsData && docsData.relevant_docs && docsData.relevant_docs.length > 0) {
-            data = {
-                messages: [
-                    {
-                        role: "system",
-                        content: systemContent
-                    },
-                    {
-                        role: "user",
-                        content: userMessage
-                    }
-                ],
-                relevant_docs: docsData,
-                prev_bot_message: prevBotMessage
+            systemMessage = `
+                You are a friendly chatbot.
+                ${hasRecentResponses ? 'You must refer to CONTEXT first, then HANU documents, filter all relevant content to answer the question' : 'You must refer to HANU documents'} to answer the questions.
+                You respond in a concise, technically credible tone. You use the language of the question given to respond.
+                If you can not find relevant information in HANU documents, say apology for not being able to answer.
+                You automatically make currency exchange based on the language asked, if not provided specific currency.
+            `;
+
+            const contextContent = hasRecentResponses ? `CONTEXT: ${recentResponses}; ` : '';
+            assistant = {
+                role: 'assistant',
+                content: `${contextContent}\nHANU documents: ${contextText}`
             };
         } else {
-            const systemContent = `You are a friendly chatbot. You respond in a concise, technically credible tone.
-            You use the language of the question given to respond.
-            You automatically make currency exchange based on the language asked, if not provided specific currency.`;
-            data = {
-                messages: [
-                    {
-                        role: "system",
-                        content: systemContent
-                    },
-                    {
-                        role: "user",
-                        content: userMessage
-                    },
-                ]
-            };
+            systemMessage = `
+                You are a friendly chatbot.
+                You respond in a concise, technically credible tone.
+                You use the language used in the question to respond.
+            `;
+            assistant = null;
         }
+
+        const data = {
+            messages: [
+                {
+                    role: "system",
+                    content: systemMessage
+                },
+                {
+                    role: "user",
+                    content: question
+                },
+                assistant
+            ].filter(message => message !== null)
+        };
 
         setIsLoading(true);
 
@@ -155,13 +145,13 @@ export default function ServicesBot() {
             if (contentType && contentType.includes('application/json')) {
                 // If the response is JSON, parse it as JSON
                 const responseData = await response.json();
-                sessionStorage.setItem('botMessage_services', responseData.message);
+                sessionStorage.setItem('botMessages_services', JSON.stringify([...recentResponses, responseData.message]));
                 // Assuming responseData is an object with the bot's message
                 setChatLog(prevChatLog => [...prevChatLog, { type: 'bot', message: responseData.message }]);
             } else {
                 // If the response is not JSON, treat it as plain text
                 const responseText = await response.text();
-                sessionStorage.setItem('botMessage_services', responseText);
+                sessionStorage.setItem('botMessages_services', JSON.stringify([...recentResponses, responseText]));
 
                 // Assuming responseText contains the bot's message
                 setChatLog(prevChatLog => [...prevChatLog, { type: 'bot', message: responseText }]);
