@@ -38,7 +38,7 @@ const ChatInterface = ({ clearChat, chatLog, isLoading, inputQuestion, setInputQ
                             <div key={index} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
                                 {message.type === 'user' && (
                                     <div className="flex items-center">
-                                        <div className={`${message.type === 'user' ? 'bg-red-400' : 'bg-gray-600'} rounded-lg p-4 text-white max-w-xl mr-2`} style={{ wordWrap: 'break-word' }}>
+                                        <div className="bg-red-400 rounded-lg p-4 text-white max-w-xl mr-2" style={{ wordWrap: 'break-word' }}>
                                             {message.message}
                                         </div>
                                         <Image src="/avatar.jpg" width={50} height={50} alt={"avatar"} className="w-8 h-8 rounded-full" />
@@ -47,7 +47,7 @@ const ChatInterface = ({ clearChat, chatLog, isLoading, inputQuestion, setInputQ
                                 {message.type === 'bot' && (
                                     <div className="flex items-center">
                                         <Image src="/logo.png" width={50} height={50} alt={"logo"} className="w-8 h-8 rounded-full mr-2" />
-                                        <div className={`${message.type === 'user' ? 'bg-red-400' : 'bg-gray-600'} rounded-lg p-4 text-white max-w-xl`} style={{ wordWrap: 'break-word', whiteSpace: 'pre-line' }}>
+                                        <div className="bg-gray-600 rounded-lg p-4 text-white max-w-xl" style={{ wordWrap: 'break-word', whiteSpace: 'pre-line' }}>
                                             {message.message}
                                         </div>
                                     </div>

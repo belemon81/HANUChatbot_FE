@@ -21,7 +21,7 @@ const Navbar = ({ currentPage, clearChat }) => {
                     </svg>
                 </button>
                 {isDropdownOpen && (
-                    <div className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-10">
+                    <div className="absolute left-0 mt-2 w-52 bg-white rounded-lg shadow-lg z-10">
                         <div className="py-1">
                             <Link href="/education">
                                 <div className={`block px-4 py-2 ${currentPage === "/education" ? "text-blue-500" : "text-gray-800"} hover:bg-gray-200`}>Chương trình đào tạo</div>
@@ -34,7 +34,7 @@ const Navbar = ({ currentPage, clearChat }) => {
                 )}
             </div>
             <div>
-                <button onClick={clearChat} className="flex items-center bg-red-600 text-white font-semibold px-2 py-2 rounded-lg focus:outline-none">
+                <button onClick={clearChat} className="flex items-center bg-red-700 hover:bg-rose-500 text-white font-semibold px-2 py-2 rounded-lg focus:outline-none">
                     <Image src="/trash.png" width={20} height={20} alt="trash" />
                 </button>
             </div>

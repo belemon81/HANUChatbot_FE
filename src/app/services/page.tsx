@@ -43,10 +43,11 @@ export default function ServicesBot() {
 
 
     const clearChat = () => {
-        if (chatLog.length > 1) {
-            setChatLog([{ type: 'bot', message: 'Ask me anything about Hanoi University public adminstration service' }]);
-            sessionStorage.removeItem('botMessage_services');
-        }
+        console.log("Clearing chat");
+        // if (chatLog.length > 1) {
+        setChatLog([{ type: 'bot', message: 'Ask me anything about Hanoi University educational program' }]);
+        sessionStorage.removeItem('botMessages_services');
+        // }
     };
 
     async function fetchDocuments(question: string) {
@@ -73,16 +74,16 @@ export default function ServicesBot() {
     const sendMessage = async (question: string, docsData: any) => {
 
         const url = '/api/chat';
-        let contextText = "";
+        let docsContext = "";
         let systemMessage;
         let assistant;
 
         if (docsData && docsData.relevant_docs && docsData.relevant_docs.length > 0) {
             for (const document of docsData.relevant_docs) {
-                contextText += `${document}\n`; // Assuming each document is a string
+                docsContext += `${document}\n`; // Assuming each document is a string
             }
         }
-        console.log(contextText);
+        // console.log(docsContext);
 
         const storedResponses = JSON.parse(sessionStorage.getItem('botMessages_services') || '[]');
         const recentResponses = storedResponses.slice(Math.max(storedResponses.length - 5, 0));
@@ -92,15 +93,16 @@ export default function ServicesBot() {
             systemMessage = `
                 You are a friendly chatbot.
                 ${hasRecentResponses ? 'You must refer to CONTEXT first, then HANU documents, filter all relevant content to answer the question' : 'You must refer to HANU documents'} to answer the questions.
-                You respond in a concise, technically credible tone. You must translate your response to Vietnamese.
-                If you can not find relevant information in HANU documents, say apology for not being able to answer.
+                You respond in a concise, technically credible tone. If you're uncertain and the answer isn't explicitly stated
+                in the provided CONTEXT, respond with: "Sorry, I'm not sure how to help with that."
+                You use the language of the question given to respond.
                 You automatically make currency exchange based on the language asked, if not provided specific currency.
             `;
 
             const contextContent = hasRecentResponses ? `CONTEXT: ${recentResponses}; ` : '';
             assistant = {
                 role: 'assistant',
-                content: `${contextContent}\nHANU documents: ${contextText}`
+                content: `${contextContent}\nHANU documents: ${docsContext}`
             };
         } else {
             systemMessage = `
