@@ -40,13 +40,17 @@ export default function EducationBot() {
         setInputQuestion('');
     }
 
+    const [selectedQuestion, setSelectedQuestion] = useState(null);
+
     const clearChat = () => {
         console.log("Clearing chat");
         // if (chatLog.length > 1) {
-        setChatLog([{ type: 'bot', message: 'Ask me anything about Hanoi University educational program' }]);
+        setChatLog([{ type: 'bot', message: 'Hỏi tôi bất cứ điều gì về chương trình đào tạo của Đại học Hà Nội' }]);
         sessionStorage.removeItem('botMessages_education');
+        setSelectedQuestion(null)
         // }
     };
+    
 
     async function fetchDocuments(question: string) {
         const url = 'http://localhost:2305/hanu-chatbot/educational-program';
@@ -58,7 +62,7 @@ export default function EducationBot() {
                     'Accept-Encoding': 'gzip, deflate, br',
                     'Connection': 'keep-alive'
                 },
-                body: JSON.stringify({ question }),
+                body: JSON.stringify({ question })
             });
             if (!response.ok) {
                 throw new Error('Failed to fetch documents');
@@ -83,7 +87,7 @@ export default function EducationBot() {
                 docsContext += `${document}\n`; // Assuming each document is a string
             }
         }
-        // console.log(docsContext);
+        console.log(docsContext);
 
         const storedResponses = JSON.parse(sessionStorage.getItem('botMessages_education') || '[]');
         const recentResponses = storedResponses.slice(Math.max(storedResponses.length - 5, 0));
@@ -93,15 +97,14 @@ export default function EducationBot() {
 
         if (docsData && docsData.relevant_docs && docsData.relevant_docs.length > 0) {
             systemMessage = `
-                You are a friendly chatbot.
-                ${hasRecentResponses ? 'You must refer to CONTEXT first, then HANU documents, combine all relevant content to answer the question.' : 'You must refer to HANU documents'} to answer the questions.
-                You respond in a concise, technically credible tone. If you're uncertain and the answer isn't explicitly stated
-                in the provided CONTEXT, respond with: "Sorry, I'm not sure how to help with that."
-                You use the language of the question given to respond.
+                You are a friendly chatbot of Hanoi University.
+                You must refer to HISTORY (your previous responses) for understanding the question if necessary.
+                You must filter all relevant content in HANU documents to answer the questions.
+                You must use the language of the question to respond.
+                You respond with a concise, technically credible tone.
                 You automatically make currency exchange based on the language asked, if not provided specific currency.
             `;
-
-            const contextContent = hasRecentResponses ? `CONTEXT: ${recentResponses}; ` : '';
+            const contextContent = hasRecentResponses ? `HISTORY: ${recentResponses}; ` : '';
             assistant = {
                 role: 'assistant',
                 content: `${contextContent}\nHANU documents: ${docsContext}`
@@ -149,13 +152,13 @@ export default function EducationBot() {
             if (contentType && contentType.includes('application/json')) {
                 // If the response is JSON, parse it as JSON
                 const responseData = await response.json();
-                sessionStorage.setItem('botMessages_education', JSON.stringify([...recentResponses, responseData.message]));
+                sessionStorage.setItem('botMessages_education', JSON.stringify([responseData.message, ...recentResponses]));
                 // Assuming responseData is an object with the bot's message
                 setChatLog(prevChatLog => [...prevChatLog, { type: 'bot', message: responseData.message }]);
             } else {
                 // If the response is not JSON, treat it as plain text
                 const responseText = await response.text();
-                sessionStorage.setItem('botMessages_education', JSON.stringify([...recentResponses, responseText]));
+                sessionStorage.setItem('botMessages_education', JSON.stringify([responseText, ...recentResponses,]));
 
                 // Assuming responseText contains the bot's message
                 setChatLog(prevChatLog => [...prevChatLog, { type: 'bot', message: responseText }]);
@@ -178,6 +181,8 @@ export default function EducationBot() {
             chatEnd={chatEnd}
             currentPage={currentPage}
             FAQs={educationFAQs}
+            selectedQuestion={selectedQuestion}
+            setSelectedQuestion={setSelectedQuestion}
         />
 
     );

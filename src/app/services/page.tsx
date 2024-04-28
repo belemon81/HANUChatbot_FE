@@ -41,12 +41,14 @@ export default function ServicesBot() {
         setInputQuestion('');
     }
 
+    const [selectedQuestion, setSelectedQuestion] = useState(null);
 
     const clearChat = () => {
         console.log("Clearing chat");
         // if (chatLog.length > 1) {
-        setChatLog([{ type: 'bot', message: 'Ask me anything about Hanoi University educational program' }]);
+        setChatLog([{ type: 'bot', message: 'Hỏi tôi bất cứ điều gì về dịch vụ hành chính công của Đại học Hà Nội' }]);
         sessionStorage.removeItem('botMessages_services');
+        setSelectedQuestion(null)
         // }
     };
 
@@ -57,6 +59,8 @@ export default function ServicesBot() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept-Encoding': 'gzip, deflate, br',
+                    'Connection': 'keep-alive'
                 },
                 body: JSON.stringify({ question }),
             });
@@ -91,15 +95,15 @@ export default function ServicesBot() {
 
         if (docsData && docsData.relevant_docs && docsData.relevant_docs.length > 0) {
             systemMessage = `
-                You are a friendly chatbot.
-                ${hasRecentResponses ? 'You must refer to CONTEXT first, then HANU documents, filter all relevant content to answer the question' : 'You must refer to HANU documents'} to answer the questions.
-                You respond in a concise, technically credible tone. If you're uncertain and the answer isn't explicitly stated
-                in the provided CONTEXT, respond with: "Sorry, I'm not sure how to help with that."
-                You use the language of the question given to respond.
+                You are a friendly chatbot of Hanoi University.
+                You must refer to HISTORY (your previous responses) for understanding the question if necessary.
+                You must filter all relevant content in HANU documents to answer the questions.
+                You must use the language of the question to respond.
+                You respond with a concise, technically credible tone.
                 You automatically make currency exchange based on the language asked, if not provided specific currency.
             `;
 
-            const contextContent = hasRecentResponses ? `CONTEXT: ${recentResponses}; ` : '';
+            const contextContent = hasRecentResponses ? `HISTORY: ${recentResponses}; ` : '';
             assistant = {
                 role: 'assistant',
                 content: `${contextContent}\nHANU documents: ${docsContext}`
@@ -167,7 +171,6 @@ export default function ServicesBot() {
 
 
 
-
     return (
         <ChatInterface
             clearChat={clearChat}
@@ -179,6 +182,8 @@ export default function ServicesBot() {
             chatEnd={chatEnd}
             currentPage={currentPage}
             FAQs={servicesFAQs}
+            selectedQuestion={selectedQuestion}
+            setSelectedQuestion={setSelectedQuestion}
         />
     );
 };

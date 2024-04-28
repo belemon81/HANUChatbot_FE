@@ -6,9 +6,9 @@ import Sidebar from "./SideBar";
 import Navbar from "./Navbar";
 
 
-const ChatInterface = ({ clearChat, chatLog, isLoading, inputQuestion, setInputQuestion, handleSubmit, chatEnd, currentPage, FAQs }) => {
+const ChatInterface = ({ clearChat, chatLog, isLoading, inputQuestion, setInputQuestion, handleSubmit, chatEnd, currentPage, FAQs, selectedQuestion, setSelectedQuestion }) => {
 
-    const [selectedQuestion, setSelectedQuestion] = useState(null);
+    // const [selectedQuestion, setSelectedQuestion] = useState(null);
 
     useEffect(() => {
         if (selectedQuestion) {
@@ -93,7 +93,7 @@ const ChatInterface = ({ clearChat, chatLog, isLoading, inputQuestion, setInputQ
                             type="submit"
                             className="bg-red-500 rounded-lg px-4 py-2 text-white font-semibold focus:outline-none hover:bg-red-600 transition-colors duration-300"
                         >
-                            Send
+                            Gửi
                         </button>
                     </div>
                 </form>
