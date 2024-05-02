@@ -12,7 +12,7 @@ export default function ServicesBot() {
     const currentPage = usePathname();
 
     const servicesFAQs = [
-        "Cách đăng ký ký túc xá",
+        "Có những loại học bổng nào?",
         "Một tín chỉ khoa Công nghệ thông tin bao nhiêu tiền?",
         "Cách thanh toán học phí",
     ];
@@ -98,7 +98,7 @@ export default function ServicesBot() {
                 You are a friendly chatbot of Hanoi University.
                 You must refer to HISTORY (your previous responses) for understanding the question if necessary.
                 You must filter all relevant content in HANU documents to answer the questions.
-                You must use the language of the question to respond.
+                You must use the language of the question to respond, if you cannot detect the language of the question, use Vietnamese to answer.
                 You respond with a concise, technically credible tone.
                 You automatically make currency exchange based on the language asked, if not provided specific currency.
             `;
@@ -112,7 +112,7 @@ export default function ServicesBot() {
             systemMessage = `
                 You are a friendly chatbot.
                 You respond in a concise, technically credible tone.
-                You use the language used in the question to respond.
+                You must use the language of the question to respond, if you cannot detect the language of the question, use Vietnamese to answer.
             `;
             assistant = null;
         }
@@ -164,6 +164,7 @@ export default function ServicesBot() {
             }
         } catch (error) {
             console.error('Error:', error);
+            setChatLog(prevChatLog => [...prevChatLog, { type: 'bot', message: "Đã xảy ra lỗi trong khi xử lý yêu cầu của bạn. Vui lòng thử lại sau." }]);
         } finally {
             setIsLoading(false);
         }
