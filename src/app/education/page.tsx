@@ -100,7 +100,8 @@ export default function EducationBot() {
                 You are a friendly chatbot of Hanoi University.
                 You must refer to HISTORY (your previous responses) for understanding the question if necessary.
                 You must filter all relevant content in HANU documents to answer the questions.
-                You must use the language of the question to respond, if you cannot detect the language of the question, use Vietnamese to answer.
+                You must use the language of the question to respond, if you cannot detect the language of the question,
+                use Vietnamese to answer.
                 You respond with a concise, technically credible tone.
                 You automatically make currency exchange based on the language asked, if not provided specific currency.
             `;
@@ -113,7 +114,8 @@ export default function EducationBot() {
             systemMessage = `
                 You are a friendly chatbot.
                 You respond in a concise, technically credible tone.
-                You must use the language of the question to respond, if you cannot detect the language of the question, use Vietnamese to answer.
+                You must use the language of the question to respond, if you cannot detect the language of the question,
+                use Vietnamese to answer.
             `;
             assistant = null;
         }

@@ -46,7 +46,7 @@ const ChatInterface = ({ clearChat, chatLog, isLoading, inputQuestion, setInputQ
                                 )}
                                 {message.type === 'bot' && (
                                     <div className="flex items-center">
-                                        <Image src="/logo.png" priority width={50} height={50} alt={"logo"} className="w-8 h-8 rounded-full mr-2" style={{ height: "auto" }}/>
+                                        <Image src="/logo.png" priority width={50} height={50} alt={"logo"} className="w-8 h-8 rounded-full mr-2" />
                                         <div className="bg-gray-600 rounded-lg p-4 text-white max-w-xl" style={{ wordWrap: 'break-word', whiteSpace: 'pre-line' }}>
                                             {message.message}
                                         </div>
@@ -57,7 +57,7 @@ const ChatInterface = ({ clearChat, chatLog, isLoading, inputQuestion, setInputQ
                         }
                         {isLoading && (
                             <div className="flex justify-start">
-                                <Image src="/logo.png" priority width={50} height={50} alt={"logo"} className="w-8 h-8 rounded-full mr-2" style={{ height: "auto" }}/>
+                                <Image src="/logo.png" width={50} height={50} alt={"logo"} className="w-8 h-8 rounded-full mr-2" />
                                 <div className="bg-gray-600 rounded-lg p-4 text-white max-w-sm">
                                     <LoadingDots />
                                 </div>
