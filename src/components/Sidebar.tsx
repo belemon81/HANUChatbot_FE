@@ -6,7 +6,7 @@ const Sidebar = ({ currentPage, clearChat }) => {
     return (
         <div className="max-md:hidden bg-gray-800 w-1/5 flex flex-col justify-between items-center relative flex-shrink-0">
             <div className="flex flex-col justify-center items-center absolute top-1/2 transform -translate-y-1/2">
-            <Image src="/logo.png" priority width={50} height={50} alt="logo" className="w-8 h-8 rounded-full mr-2" style={{ height: "auto" }}></Image>
+            <Image src="/logo.png" priority width={100} height={100} alt="logo" style={{ width: "auto", height: "auto" }} />
                 <h1 className="text-white py-4 text-2xl font-semibold mb-6">HanuGPT</h1>
                 <div className="p-4">
                     <Link href="/education">
