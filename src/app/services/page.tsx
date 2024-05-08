@@ -164,7 +164,8 @@ export default function ServicesBot() {
             }
         } catch (error) {
             console.error('Error:', error);
-            setChatLog(prevChatLog => [...prevChatLog, { type: 'bot', message: "Đã xảy ra lỗi trong khi xử lý yêu cầu của bạn. Vui lòng thử lại sau." }]);
+            setChatLog(prevChatLog => [...prevChatLog, { type: 'bot',
+            message: "Đã xảy ra lỗi trong khi xử lý yêu cầu của bạn. Vui lòng thử lại sau." }]);
         } finally {
             setIsLoading(false);
         }

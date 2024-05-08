@@ -44,11 +44,9 @@ export default function EducationBot() {
 
     const clearChat = () => {
         console.log("Clearing chat");
-        // if (chatLog.length > 1) {
         setChatLog([{ type: 'bot', message: 'Hỏi tôi bất cứ điều gì về chương trình đào tạo của Đại học Hà Nội' }]);
         sessionStorage.removeItem('botMessages_education');
         setSelectedQuestion(null)
-        // }
     };
     
 
@@ -165,7 +163,8 @@ export default function EducationBot() {
             }
         } catch (error) {
             console.error('Error:', error);
-            setChatLog(prevChatLog => [...prevChatLog, { type: 'bot', message: "Đã xảy ra lỗi trong khi xử lý yêu cầu của bạn. Vui lòng thử lại sau." }]);
+            setChatLog(prevChatLog => [...prevChatLog, { type: 'bot',
+            message: "Đã xảy ra lỗi trong khi xử lý yêu cầu của bạn. Vui lòng thử lại sau." }]);
         } finally {
             setIsLoading(false);
         }
