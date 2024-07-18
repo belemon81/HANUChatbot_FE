@@ -11,14 +11,14 @@ export default function EducationBot() {
     const currentPage = usePathname();
 
     const educationFAQs = [
-        "Tổng số tín chỉ khoa công nghệ thông tin?",
+        "Tổng số tín chỉ khoa công nghệ thông tin là bao nhiêu?",
         "Khoa ngôn ngữ Anh có những định hướng gì?",
         "Khối kiến thức chung gồm những môn gì?"
     ];
 
     const [inputQuestion, setInputQuestion] = useState('');
     const [chatLog, setChatLog] = useState<ChatLogItem[]>([
-        { type: 'bot', message: 'Hỏi tôi bất cứ điều gì về chương trình đào tạo của Đại học Hà Nội' }
+        { type: 'bot', message: 'Hỏi tôi bất cứ điều gì về chương trình đào tạo của Đại học Hà Nội.' }
     ]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -43,22 +43,22 @@ export default function EducationBot() {
     const [selectedQuestion, setSelectedQuestion] = useState(null);
 
     const clearChat = () => {
-        console.log("Clearing chat");
-        setChatLog([{ type: 'bot', message: 'Hỏi tôi bất cứ điều gì về chương trình đào tạo của Đại học Hà Nội' }]);
+        console.log("Clearing chat...");
+        // if (chatLog.length > 1) {
+        setChatLog([{ type: 'bot', message: 'Hỏi tôi bất cứ điều gì về chương trình đào tạo của Đại học Hà Nội.' }]);
         sessionStorage.removeItem('botMessages_education');
         setSelectedQuestion(null)
+        // }
     };
     
 
     async function fetchDocuments(question: string) {
-        const url = 'http://localhost:2305/hanu-chatbot/educational-program';
+        const url = 'http://localhost:8080/hanu-chatbot/educational-program';
         try {
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Accept-Encoding': 'gzip, deflate, br',
-                    'Connection': 'keep-alive'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ question })
             });
@@ -96,9 +96,9 @@ export default function EducationBot() {
         if (docsData && docsData.relevant_docs && docsData.relevant_docs.length > 0) {
             systemMessage = `
                 You are a friendly chatbot of Hanoi University.
-                You must refer to HISTORY (your previous responses) for understanding the question if necessary.
+                ${hasRecentResponses ? 'You must refer to HISTORY (your previous responses) for understanding the question if necessary.' : ''}
                 You must filter all relevant content in HANU documents to answer the questions.
-                You must use the language of the question to respond.
+                You must use the language of the question to respond; if you cannot detect the language of the question, use Vietnamese to answer.
                 You respond with a concise, technically credible tone.
                 You automatically make currency exchange based on the language asked, if not provided specific currency.
             `;
@@ -109,9 +109,9 @@ export default function EducationBot() {
             };
         } else {
             systemMessage = `
-                You are a friendly chatbot.
+                You are a friendly chatbot of Hanoi University.
                 You respond in a concise, technically credible tone.
-                You must use the language of the question to respond.
+                You must use the language of the question to respond; if you cannot detect the language of the question, use Vietnamese to answer.
             `;
             assistant = null;
         }
@@ -156,15 +156,14 @@ export default function EducationBot() {
             } else {
                 // If the response is not JSON, treat it as plain text
                 const responseText = await response.text();
-                sessionStorage.setItem('botMessages_education', JSON.stringify([responseText, ...recentResponses,]));
+                sessionStorage.setItem('botMessages_education', JSON.stringify([responseText, ...recentResponses, ]));
 
                 // Assuming responseText contains the bot's message
                 setChatLog(prevChatLog => [...prevChatLog, { type: 'bot', message: responseText }]);
             }
         } catch (error) {
             console.error('Error:', error);
-            setChatLog(prevChatLog => [...prevChatLog, { type: 'bot',
-            message: "Đã xảy ra lỗi trong khi xử lý yêu cầu của bạn. Vui lòng thử lại sau." }]);
+            setChatLog(prevChatLog => [...prevChatLog, { type: 'bot', message: "Đã xảy ra lỗi trong khi xử lý yêu cầu của bạn. Vui lòng thử lại sau." }]);
         } finally {
             setIsLoading(false);
         }
